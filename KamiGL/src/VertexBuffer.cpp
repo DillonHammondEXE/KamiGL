@@ -1,3 +1,4 @@
+#include "Renderer.h" // Double-check if this should be included here
 #include "VertexBuffer.h"
 
 VertexBuffer::VertexBuffer(const void * data, unsigned int size)
