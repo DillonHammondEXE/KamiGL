@@ -17,6 +17,27 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 0.0f);  // THIS IS MY OWN CODE NOT THE CHERNOS
+
+ // THIS IS MY OWN FUNCTION NOT THE CHERNOS
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	float cameraSpeed = 0.1f; 
+	if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+		if (key == GLFW_KEY_LEFT) {
+			cameraPos.x += cameraSpeed;
+		}
+		else if (key == GLFW_KEY_RIGHT) {
+			cameraPos.x -= cameraSpeed;
+		}
+		else if (key == GLFW_KEY_UP) {
+			cameraPos.y -= cameraSpeed;
+		}
+		else if (key == GLFW_KEY_DOWN) {
+			cameraPos.y += cameraSpeed;
+		}
+	}
+}
+
 int main(void)
 {
 	GLFWwindow* window;
@@ -39,6 +60,8 @@ int main(void)
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
+
+	glfwSetKeyCallback(window, key_callback); // THIS IS MY OWN CODE NOT THE CHERNOS
 
 	glfwSwapInterval(1);
 
@@ -104,11 +127,16 @@ int main(void)
 		/* Loop until the user closes the window */
 		while (!glfwWindowShouldClose(window))
 		{
+			glm::mat4 view = glm::translate(glm::mat4(1.0f), -cameraPos); // MY CODE NOT THE CHERNOS
+			glm::mat4 mvp = proj * view * model; // NEW MVP MY CODE NOT THE CHERNOS
+
+
 			/* Render here */
 			renderer.Clear();
 
 			shader.Bind();
 			// shader.SetUniform4f("u_Color", r, 0.3f, 0.8f, 1.0f);
+			shader.SetUniformMat4f("u_MVP", mvp); // MY CODE NOT THE CHERNOS
 
 			renderer.Draw(va, ib, shader);
 		
