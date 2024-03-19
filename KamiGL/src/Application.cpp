@@ -77,12 +77,15 @@ int main(void)
 
 		// 4-3 matrix
 		glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -.75f, .75f, -1.0f, 1.0f);
+		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-.5, 0, 0)); // Moves CAMERA to the right
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(.5, .5, 0));
 
+		glm::mat4 mvp = proj * view * model;
 
 		Shader shader("res/shaders/Basic.shader");
 		shader.Bind();
 		// shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
-		shader.SetUniformMat4f("u_MVP", proj);
+		shader.SetUniformMat4f("u_MVP", mvp);
 
 		Texture texture("res/textures/Geomtry.png");
 		texture.Bind(); // texture.Bind(2) requires SetUniform1i(...,2);
